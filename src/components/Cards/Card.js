@@ -1,13 +1,20 @@
 import React from 'react'
 import './Cards.css'
 
-export default function Card({character, setActiveCard, activeCard}) {
+export default function Card({character, setActiveCard, activeCard, characterAction, savedCharacters}) {
 
     const {image, name, species, gender} = character
 
+    const handleClick = (character) => (
+        (savedCharacters.includes(character)
+            ? characterAction(character)
+            : (characterAction(character),
+                setActiveCard(character))
+        )
+    )
 
     return (
-        <div className={ activeCard ? 'active-card' : 'card'} onClick={() => setActiveCard(character)}>
+        <div className={ activeCard ? 'active-card' : 'card'} onClick={() => activeCard ? null : handleClick(character)}>
             <h3>{name}</h3>
             <img src={image} />
             {activeCard
@@ -16,7 +23,7 @@ export default function Card({character, setActiveCard, activeCard}) {
                     <p>{species}</p>
                     </section>
             )
-            :null
+            : null
         }
             
         </div>
